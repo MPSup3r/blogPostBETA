@@ -27,7 +27,7 @@ export default function TeamPage() {
             <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 p-6 rounded-xl flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:border-cyan-500/50 group">
               <div className="w-24 h-24 mb-4 overflow-hidden rounded-full border-4 border-cyan-100 dark:border-cyan-500/20 group-hover:scale-110 transition-transform duration-300">
                 <Image 
-                  src="/manuel.jpg" // CAMBIA QUI IL NOME DEL FILE
+                  src="https://github.com/CosmoUniverso/AutoStokerSite/blob/main/PratiPFP_2.png?raw=true" // CAMBIA QUI IL NOME DEL FILE
                   alt="Prati Manuel"
                   width={96}
                   height={96}
@@ -45,7 +45,7 @@ export default function TeamPage() {
             <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 p-6 rounded-xl flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:border-blue-500/50 group">
               <div className="w-24 h-24 mb-4 overflow-hidden rounded-full border-4 border-blue-100 dark:border-blue-500/20 group-hover:scale-110 transition-transform duration-300">
                 <Image 
-                  src="/daniele.jpg" // CAMBIA QUI IL NOME DEL FILE
+                  src="https://github.com/CosmoUniverso/AutoStokerSite/blob/main/AtienzaPFP_2.png?raw=true" // CAMBIA QUI IL NOME DEL FILE
                   alt="Atienza Daniele"
                   width={96}
                   height={96}
@@ -63,7 +63,7 @@ export default function TeamPage() {
             <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-white/5 p-6 rounded-xl flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:border-emerald-500/50 group">
               <div className="w-24 h-24 mb-4 overflow-hidden rounded-full border-4 border-emerald-100 dark:border-emerald-500/20 group-hover:scale-110 transition-transform duration-300">
                 <Image 
-                  src="/lorenzo.jpg" // CAMBIA QUI IL NOME DEL FILE
+                  src="https://github.com/CosmoUniverso/AutoStokerSite/blob/main/EbraicoPFP_2.png?raw=true" // CAMBIA QUI IL NOME DEL FILE
                   alt="Ebraico Lorenzo"
                   width={96}
                   height={96}

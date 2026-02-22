@@ -104,9 +104,9 @@
     "title": "Il Team AutoStocker",
     "subtitle": "Conosci i creatori del progetto e contattaci per qualsiasi informazione.",
     "back": "Torna alle Impostazioni",
-    "dev": "Sviluppatore",
-    "role1": "Ruolo 1",
-    "role2": "Ruolo 2",
+    "dev": "Sviluppatore software e sistemi di controllo",
+    "role1": "Progettazzione hardware e struttura meccanica",
+    "role2": "Programmazzione hardware e integrazione elettronica",
     "emailUs": "Invia un'email"
   },
   "Maintenance": {

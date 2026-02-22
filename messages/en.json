@@ -101,13 +101,13 @@
     "confirmDelete": "Are you sure you want to delete this post and all its comments? This action is irreversible."
   },
   "Team": {
-    "title": "Il Team AutoStocker",
-    "subtitle": "Conosci i creatori del progetto e contattaci per qualsiasi informazione.",
-    "back": "Torna alle Impostazioni",
-    "dev": "Sviluppatore",
-    "role1": "Ruolo 1",
-    "role2": "Ruolo 2",
-    "emailUs": "Invia un'email"
+    "title": "AutoStocker's Team",
+    "subtitle": "Meet the creators of the project and contact us for any information.",
+    "back": "Back to Settings",
+    "dev": "Software Developer & Control System Designer",
+    "role1": "Hardware & Mechanical Structure Designer",
+    "role2": "Hardware Developer & Electronics Integration Specialist",
+    "emailUs": "Email us"
   },
   "Maintenance": {
     "title": "Site under Maintenance 🚧",
