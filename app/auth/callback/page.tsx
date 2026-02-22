@@ -1,11 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
 import { Loader2 } from 'lucide-react'
 
-export default function AuthCallbackPage() {
+// 1. Separiamo la logica in un sotto-componente
+function AuthCallbackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const code = searchParams.get('code')
@@ -13,10 +14,7 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const verifyEmail = async () => {
       if (code) {
-        // Usiamo il client di Supabase che sappiamo già che hai!
         const supabase = createClient()
-        
-        // Scambiamo il codice con la sessione utente vera e propria
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         
         if (!error) {
@@ -32,11 +30,24 @@ export default function AuthCallbackPage() {
     verifyEmail()
   }, [code, router])
 
-  // Schermata visibile all'utente mentre Supabase fa i calcoli
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-cyan-500">
       <Loader2 className="w-12 h-12 animate-spin mb-4" />
       <p className="font-bold text-lg animate-pulse tracking-wider">Verifica email in corso...</p>
     </div>
+  )
+}
+
+// 2. Esportiamo la pagina principale avvolta in Suspense (per fare felice Vercel)
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-cyan-500">
+        <Loader2 className="w-12 h-12 animate-spin mb-4" />
+        <p className="font-bold text-lg animate-pulse tracking-wider">Caricamento...</p>
+      </div>
+    }>
+      <AuthCallbackContent />
+    </Suspense>
   )
 }
