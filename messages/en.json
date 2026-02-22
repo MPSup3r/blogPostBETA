@@ -1,0 +1,116 @@
+{
+  "HomePage": {
+    "title": "Latest Updates",
+    "subtitle": "Stay up to date with the development of the AutoStocker BETA project.",
+    "newPost": "+ New Post",
+    "empty": "No updates published at the moment.",
+    "commentOrRead": "Comment or Read",
+    "loading": "Loading AutoStocker..."
+  },
+  "Nav": {
+    "login": "Login / Register",
+    "logout": "Logout"
+  },
+  "Settings": {
+    "title": "Settings",
+    "subtitle": "Manage your account and app preferences.",
+    "profile": "Manage Profile",
+    "appearance": "Dark / Light Theme",
+    "language": "App Language",
+    "back": "Back to Home",
+    "legal": "Legal Documents",
+    "tos": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "contacts": "Contacts & Team",
+    "contactsDesc": "The creators of the AutoStocker project.",
+    "emailUs": "Send an email"
+  },
+  "Auth": {
+    "loginTitle": "Login",
+    "registerTitle": "Registration",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Sign In",
+    "toRegister": "Don't have an account? Register",
+    "toLogin": "Already have an account? Sign In",
+    "step1": "Data",
+    "step2": "Legal",
+    "step3": "Profile",
+    "next": "Next",
+    "back": "Back",
+    "signUp": "Complete Registration",
+    "tos": "I have read and accept the Terms of Service",
+    "privacy": "I have read and accept the Privacy Policy",
+    "legalWarning": "To use AutoStocker you must accept our legal terms regarding data processing and community rules.",
+    "nicknameLabel": "Choose your Nickname",
+    "avatarInfo": "For security reasons, you will be able to upload your custom Profile Picture from the dashboard only after confirming your account via email.",
+    "checkEmail": "Great! Check your email to confirm your account.",
+    "errorLegal": "You must accept Terms and Privacy to continue.",
+    "loading": "Processing...",
+    "read": "Read",
+    "tosContent": "Welcome to AutoStocker BETA. By accepting these terms you agree to maintain respectful behavior in the community. Posting offensive content, spam, or illegal material in the comments is strictly prohibited. We reserve the right to suspend or delete accounts that violate these rules. The service is currently provided 'as is' in the testing phase, without warranties.",
+    "privacyContent": "Your privacy is important to us. We collect your email address and nickname solely to create your account and allow you to interact with the blog (e.g., leaving likes and comments). Your passwords are securely encrypted by the system. We do not sell your data to third parties and will not spam you. You can request the deletion of your account at any time.",
+    "close": "Close"
+  },
+  "Profile": {
+    "title": "Your Profile",
+    "subtitle": "Manage your identity on AutoStocker.",
+    "usernameLabel": "Username",
+    "save": "Save Changes",
+    "admin": "Administrator",
+    "successUsername": "Username successfully updated!",
+    "successAvatar": "Profile picture successfully updated!",
+    "error": "An error occurred during the operation.",
+    "compressing": "Compressing image..."
+  },
+  "Cookies": {
+    "message": "We use cookies to improve your experience on AutoStocker. You can choose to accept all cookies or only those essential for the site to function.",
+    "accept": "Accept All",
+    "decline": "Essential Only"
+  },
+  "CreatePost": {
+    "title": "Create a new Post",
+    "subtitle": "Write an update for the community.",
+    "postTitle": "Post Title",
+    "cover": "Cover Image",
+    "uploadCover": "Upload Cover",
+    "content": "Post Content",
+    "publish": "Publish Post",
+    "loading": "Publishing...",
+    "success": "Post successfully published!",
+    "error": "Error during publication.",
+    "back": "Back to Home",
+    "bold": "Bold",
+    "heading": "Heading",
+    "image": "Image (Link)",
+    "youtube": "YouTube Video"
+  },
+  "SinglePost": {
+    "back": "Go back",
+    "writeComment": "Write a comment...",
+    "submit": "Submit Comment",
+    "loginToComment": "Log in to comment",
+    "noComments": "No comments yet. Break the ice!",
+    "loading": "Loading article...",
+    "reply": "Reply",
+    "cancel": "Cancel",
+    "viewReplies": "View replies",
+    "hideReplies": "Hide replies",
+    "discussion": "Discussion",
+    "deletePost": "Delete Post",
+    "confirmDelete": "Are you sure you want to delete this post and all its comments? This action is irreversible."
+  },
+  "Team": {
+    "title": "Il Team AutoStocker",
+    "subtitle": "Conosci i creatori del progetto e contattaci per qualsiasi informazione.",
+    "back": "Torna alle Impostazioni",
+    "dev": "Sviluppatore",
+    "role1": "Ruolo 1",
+    "role2": "Ruolo 2",
+    "emailUs": "Invia un'email"
+  },
+  "Maintenance": {
+    "title": "Site under Maintenance 🚧",
+    "description": "We are upgrading our systems to offer you a better experience. Servers will be back online shortly!"
+  }
+}
