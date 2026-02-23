@@ -1,205 +1,386 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { createClient } from '@/utils/supabase/client'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { LogOut, User as UserIcon, Loader2, Settings, MessageCircle } from 'lucide-react'
-import { User } from '@supabase/supabase-js'
+import React, { useEffect, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import LikeButton from '@/app/components/LikeButton' // <--- REINSERITO IL LIKE BUTTON
+import Link from 'next/link'
+import './style.css'
 
-type Post = {
-  id: string
-  title: string
-  content: string
-  created_at: string
-  cover_image: string | null
-  profiles: { username: string; avatar_url: string | null }
-  likes: { user_id: string }[] // <--- REINSERITI I LIKE NEL TIPO
-}
+const ModelViewer = (props: React.HTMLAttributes<HTMLElement> & {
+  src?: string;
+  'auto-rotate'?: boolean | string;
+  'camera-controls'?: boolean | string;
+  'disable-zoom'?: boolean | string;
+  'shadow-intensity'?: string | number;
+  'camera-orbit'?: string;
+  'min-camera-orbit'?: string;
+}) => {
+  return React.createElement('model-viewer', props);
+};
 
-export default function HomePage() {
-  const [user, setUser] = useState<User | null>(null)
-  const [profile, setProfile] = useState<{ username: string; role: string; avatar_url: string | null } | null>(null)
-  const [posts, setPosts] = useState<Post[]>([])
-  const [loading, setLoading] = useState(true)
-  
-  const router = useRouter()
-  const [supabase] = useState(() => createClient())
+export default function HomeVetrina() {
+  const t = useTranslations('Landing') 
 
-  const t = useTranslations('HomePage')
-  const tNav = useTranslations('Nav')
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        setUser(user)
-        const { data: profileData } = await supabase.from('profiles').select('*').eq('id', user.id).single()
-        setProfile(profileData)
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIsDarkMode(true);
+      document.body.classList.add('dark-mode'); 
+      document.documentElement.setAttribute('data-theme', 'dark'); 
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    if (isDarkMode) {
+      document.body.classList.remove('dark-mode');
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+      setIsDarkMode(false);
+    } else {
+      document.body.classList.add('dark-mode');
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      setIsDarkMode(true);
+    }
+  };
+
+  useEffect(() => {
+    const modelViewerScript = document.createElement('script')
+    modelViewerScript.type = 'module'
+    modelViewerScript.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js'
+    document.head.appendChild(modelViewerScript)
+
+    const myScript = document.createElement('script')
+    myScript.src = '/script.js'
+    myScript.async = true
+    document.body.appendChild(myScript)
+
+    const animatedElements = document.querySelectorAll('.animate-block, .stagger-box > *, .flip-card');
+    
+    animatedElements.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      htmlEl.style.opacity = '0';
+      htmlEl.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      
+      const animType = el.getAttribute('data-animation');
+      if (animType === 'slideRight') htmlEl.style.transform = 'translateX(-50px)';
+      else if (animType === 'slideLeft') htmlEl.style.transform = 'translateX(50px)';
+      else htmlEl.style.transform = 'translateY(50px)';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const target = entry.target as HTMLElement;
+          target.style.opacity = '1';
+          target.style.transform = 'translateY(0) translateX(0) scale(1)';
+          observer.unobserve(target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    animatedElements.forEach((el) => observer.observe(el));
+
+    let lastScrollY = window.scrollY;
+    const navbar = document.getElementById('navbar');
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const handleScroll = () => {
+      if (navbar) {
+        navbar.style.transition = 'top 0.3s ease-in-out';
+        if (window.scrollY > lastScrollY && window.scrollY > 100) {
+          navbar.style.top = '-100px'; 
+        } else {
+          navbar.style.top = '0';
+        }
+        lastScrollY = window.scrollY;
       }
 
-      // <--- CHIEDIAMO ANCHE I LIKES AL DATABASE
-      const { data: postsData } = await supabase
-        .from('posts')
-        .select(`id, title, content, created_at, cover_image, profiles!posts_author_id_fkey(username, avatar_url), likes(user_id)`)
-        .order('created_at', { ascending: false })
+      let currentSectionId = '';
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        if (window.scrollY >= sectionTop - 200) {
+          currentSectionId = section.getAttribute('id') || '';
+        }
+      });
 
-      if (postsData) setPosts(postsData as unknown as Post[])
-      setLoading(false)
+      navLinks.forEach((link) => {
+        const htmlLink = link as HTMLElement;
+        const href = htmlLink.getAttribute('href');
+        
+        if (href && href.startsWith('#')) {
+          htmlLink.style.color = ''; 
+          htmlLink.style.textShadow = '';
+          htmlLink.style.fontWeight = 'normal';
+          
+          if (href === `#${currentSectionId}`) {
+            htmlLink.style.color = '#00d2ff';
+            htmlLink.style.textShadow = '0 0 10px rgba(0,210,255,0.3)';
+            htmlLink.style.fontWeight = 'bold';
+          }
+        }
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      if (document.head.contains(modelViewerScript)) document.head.removeChild(modelViewerScript)
+      if (document.body.contains(myScript)) document.body.removeChild(myScript)
+      window.removeEventListener('scroll', handleScroll)
+      observer.disconnect()
     }
-    fetchData()
-  }, [supabase])
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
-    setProfile(null)
-    router.refresh()
-  }
-
-  const formatDate = (dateString: string) => {
-    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' }
-    return new Date(dateString).toLocaleDateString(undefined, options) 
-  }
-
-  const getExcerpt = (text: string) => {
-    const noMarkdown = text
-      .replace(/\[youtube\]\(.*?\)/g, '') 
-      .replace(/!\[.*?\]\(.*?\)/g, '')    
-      .replace(/###/g, '')                
-      .replace(/\*\*/g, '')               
-      .replace(/\n/g, ' ')                
-      .trim();
-
-    return noMarkdown.length > 200 ? noMarkdown.substring(0, 200) + '...' : noMarkdown;
-  }
-
-  if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center text-cyan-600 dark:text-cyan-500 transition-colors duration-300">
-      <Loader2 className="w-12 h-12 animate-spin mb-4" />
-      <p className="font-bold text-lg animate-pulse tracking-wider">{t('loading')}</p>
-    </div>
-  )
+  }, [])
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-200 transition-colors duration-300">
-      <nav className="border-b border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/50 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
-        <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold hover:opacity-80 transition-opacity text-slate-900 dark:text-white">
-            AutoStocker <span className="text-cyan-600 dark:text-cyan-500">Blog</span>
-          </Link>
-          
-          <div className="flex items-center gap-4">
-            {user ? (
-              <div className="flex items-center gap-4">
-                <Link href="/settings" className="flex items-center gap-2 text-sm bg-slate-100 dark:bg-white/5 px-3 py-1.5 rounded-full border border-slate-200 dark:border-white/10 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors group">
-                  {profile?.avatar_url ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img src={profile.avatar_url} alt="Profile" className="w-6 h-6 rounded-full object-cover" />
-                  ) : (
-                    <UserIcon className="w-5 h-5 text-cyan-600 dark:text-cyan-400" />
-                  )}
-                  <span className="font-medium text-slate-800 dark:text-slate-200">{profile?.username || user.email}</span>
-                  <Settings className="w-4 h-4 ml-1 text-slate-400 group-hover:text-cyan-500 transition-colors group-hover:rotate-90 duration-300" />
-                </Link>
+    <div className="vetrina-wrapper">
+      
+      <nav id="navbar">
+        <div className="nav-content">
+          <a href="#" className="logo">
+            <img src="/logo_full_black.png" alt="AUTOSTOKER" className="logo-img" />
+          </a>
+          <ul className="nav-links">
+            <li><a href="#visione">Visione</a></li>
+            <li><a href="#architettura">Architettura</a></li>
+            <li><a href="#locomozione">Locomozione</a></li>
+            <li><a href="#sostenibilita">Sostenibilità</a></li>
+            <li><a href="#software">Software</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><Link href="/modello">Modello 3D</Link></li>
+            <li><Link href="/galleria">Galleria</Link></li>
+            
+            <li>
+              <Link href="/blog" style={{ fontWeight: 'bold', color: '#00d2ff', textShadow: '0 0 10px rgba(0,210,255,0.5)' }}>
+                Vai al Blog
+              </Link>
+            </li>
+          </ul>
 
-                <button onClick={handleSignOut} className="flex items-center gap-2 text-sm text-red-500 dark:text-red-400 hover:text-red-600 dark:hover:text-red-300 transition-colors bg-red-50 dark:bg-red-400/10 hover:bg-red-100 dark:hover:bg-red-400/20 px-3 py-1.5 rounded-full">
-                  <LogOut className="w-4 h-4" /> {tNav('logout')}
-                </button>
-              </div>
-            ) : (
-               <Link href="/login" className="bg-cyan-600 hover:bg-cyan-700 dark:hover:bg-cyan-500 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors shadow-lg shadow-cyan-500/20">
-                 {tNav('login')}
-               </Link>
-            )}
-          </div>
+          <label className="theme-switch" aria-label="Cambia Tema">
+            <input 
+              type="checkbox" 
+              id="theme-checkbox" 
+              checked={isDarkMode}
+              onChange={toggleTheme}
+            />
+            <span className="slider round">
+              <span className="icon sun">☀️</span>
+              <span className="icon moon">🌙</span>
+            </span>
+          </label>
         </div>
       </nav>
 
-      <main className="max-w-5xl mx-auto px-4 py-12">
-        <div className="flex justify-between items-end mb-10 border-b border-slate-200 dark:border-slate-800 pb-6">
-          <div>
-            <h1 className="text-4xl font-bold mb-3 text-slate-900 dark:text-white transition-colors">{t('title')}</h1>
-            <p className="text-slate-600 dark:text-slate-400 text-lg transition-colors">{t('subtitle')}</p>
-          </div>
-          {profile?.role === 'admin' && (
-            <Link href="/create-post" className="hidden sm:inline-block bg-emerald-600 hover:bg-emerald-700 dark:hover:bg-emerald-500 text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg shadow-emerald-500/20">
-              {t('newPost')}
-            </Link>
-          )}
+      <header className="hero">
+        <ModelViewer
+          src="/MechaVersion0_1.glb"
+          auto-rotate="true"
+          camera-controls="true"
+          disable-zoom="true"
+          shadow-intensity="1"
+          className="hero-3d-model"
+          camera-orbit="0deg 75deg 180%" 
+          min-camera-orbit="auto auto 150%"
+          style={{ paddingTop: '80px' }}
+        />
+
+        <div className="hero-text glass-panel animate-block" data-animation="fadeUp">
+          <h1><span className="gradient-text">AUTOSTOKER</span></h1>
+          <p className="subtitle">Il prototipo di robot mobile intelligente per l&apos;automazione industriale sostenibile.</p>
+          <p className="school">Un progetto del team dell&apos;IIS Torricelli di Milano.</p>
         </div>
 
-        <div className="space-y-6">
-          {posts.length === 0 ? (
-             <div className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-12 text-center text-slate-500 dark:text-slate-400 shadow-md dark:shadow-xl transition-colors">
-               <p className="text-lg">{t('empty')}</p>
-             </div>
-          ) : (
-            posts.map((post) => (
-              
-              <article key={post.id} className="flex flex-col md:flex-row gap-6 bg-transparent p-2 rounded-xl border border-transparent hover:bg-slate-100 dark:hover:bg-slate-900/50 hover:border-slate-200 dark:hover:border-slate-800 transition-all duration-300 group">
-                
-                {/* IMMAGINE CLICCABILE */}
-                <Link href={`/post/${post.id}`} className="w-full md:w-72 lg:w-80 flex-shrink-0 aspect-[16/9] overflow-hidden bg-slate-200 dark:bg-slate-800 rounded-lg block">
-                  {post.cover_image ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img src={post.cover_image} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-slate-400 dark:text-slate-600 text-sm">Nessuna copertina</span>
-                    </div>
-                  )}
-                </Link>
+        <Link href="/modello" className="minimal-3d-link animate-block" data-animation="fadeUp">
+          Esplora il modello 3D completo <span>→</span>
+        </Link>
+      </header>
 
-                {/* TESTO A DESTRA */}
-                <div className="flex flex-col flex-grow py-1">
-                  
-                  {/* TITOLO E RIASSUNTO CLICCABILI */}
-                  <Link href={`/post/${post.id}`} className="block mb-4">
-                    <h2 className="text-xl md:text-2xl font-bold text-cyan-700 dark:text-cyan-500 mb-3 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors uppercase tracking-wide">
-                      {post.title}
-                    </h2>
-                    <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base leading-relaxed">
-                      {getExcerpt(post.content)}
-                    </p>
-                  </Link>
+      <section id="visione" className="section text-center animate-block" data-animation="fadeUp">
+        <div className="container">
+          <h2 className="gradient-text">Visione del Progetto</h2>
+          <p className="lead">AUTOSTOKER è stato concepito come soluzione sperimentale per ambienti produttivi e logistici, capace di supportare attività operative quali movimentazione oggetti, assistenza ai processi e monitoraggio ambientale.</p>
+          <p>L&apos;intero sistema nasce con l&apos;obiettivo di dimostrare concretamente come robotica, efficienza energetica e integrazione software-hardware possano convergere in una piattaforma tecnologica modulare e scalabile, seguendo un approccio ingegneristico multidisciplinare.</p>
+        </div>
+      </section>
 
-                  {/* BARRA INFERIORE (Data, Autore, Like e Commenti) */}
-                  <div className="mt-auto flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm text-slate-500 dark:text-slate-400 pt-4 border-t border-slate-200 dark:border-slate-800/50 gap-4">
-                    
-                    <div className="flex items-center gap-3">
-                      <span className="border-b border-dashed border-slate-400 dark:border-slate-600 pb-0.5">
-                        {formatDate(post.created_at)}
-                      </span>
-                      <span>
-                        Posted by <span className="font-semibold text-slate-700 dark:text-slate-300">{post.profiles?.username || 'Team'}</span>
-                      </span>
-                    </div>
+      <section id="architettura" className="section bg-alt">
+        <div className="container grid-2">
+          <div className="text-content animate-block" data-animation="slideRight">
+            <h2 className="gradient-text">Architettura Meccanica e Strutturale</h2>
+            <p>Dal punto di vista strutturale, il robot adotta un&apos;architettura innovativa basata su due arti mobili indipendenti (gambe). Questa soluzione è stata scelta per ottimizzare la distribuzione delle masse e la stabilità dinamica.</p>
+            <ul className="stagger-box">
+              <li><strong>Il Corpo Centrale:</strong> Costituisce il busto strutturale portante, rigidamente integrato con il telaio principale. Al suo interno sono alloggiati i moduli elettronici, sensoriali ed energetici, configurati per garantire la massima protezione dei componenti e un bilanciamento dei pesi ottimale.</li>
+              <li><strong>Sistema di Manipolazione:</strong> Per le operazioni di presa, AUTOSTOKER utilizza un meccanismo costituito da due bracci lineari contrapposti. Questa soluzione garantisce una forza uniforme sull&apos;oggetto, robustezza strutturale ed efficienza energetica superiore rispetto a sistemi articolati complessi.</li>
+            </ul>
+          </div>
+          <div className="image-content animate-block" data-animation="slideLeft">
+            <img src="https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&q=80&w=800" alt="Struttura meccanica" />
+          </div>
+        </div>
+      </section>
 
-                    {/* BOTTONI INTERATTIVI */}
-                    <div className="flex items-center gap-6">
-                      <LikeButton 
-                        postId={post.id}
-                        initialLikes={post.likes ? post.likes.length : 0}
-                        isLikedInitially={post.likes ? post.likes.some(like => like.user_id === user?.id) : false}
-                        userId={user?.id}
-                      />
-                      <Link href={`/post/${post.id}`} className="flex items-center gap-1.5 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
-                        <MessageCircle className="w-4 h-4" /> 
-                        <span className="font-medium">{t('commentOrRead')}</span>
-                      </Link>
-                    </div>
+      <section id="locomozione" className="section text-center">
+        <div className="container animate-block" data-animation="fadeUp">
+          <h2 className="gradient-text">Sistema di Locomozione Avanzato</h2>
+          <p className="lead">Il sistema di movimento è il cuore tecnologico del prototipo.</p>
+          <p>Ogni &quot;piede&quot; del robot integra un set di due ruote con funzioni sdoppiate:</p>
+          <div className="cards-grid stagger-box">
+            <div className="flip-card locomotion-flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <h3>Ruota Anteriore (Sterzo)</h3>
+                  <p className="team-role">Controllo Direzionale</p>
+                </div>
+                <div className="flip-card-back locomotion-back-content">
+                  <p>Dedicata esclusivamente alla direzione. Essendo priva di trazione, permette una precisione millimetrica nelle manovre e riduce drasticamente gli attriti durante i cambi di traiettoria.</p>
+                </div>
+              </div>
+            </div>
+            <div className="flip-card locomotion-flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <h3>Ruota Posteriore (Trazione)</h3>
+                  <p className="team-role">Forza Motrice</p>
+                </div>
+                <div className="flip-card-back locomotion-back-content">
+                  <p>Dedicata esclusivamente alla spinta e alla forza motrice. Questa configurazione ibrida permette un controllo dinamico superiore, evitando slittamenti e ottimizzando il consumo energetico durante lo spostamento di carichi pesanti.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      <section id="sostenibilita" className="section bg-alt">
+        <div className="container grid-2 reverse">
+          <div className="text-content animate-block" data-animation="slideLeft">
+            <h2 className="gradient-text">Sostenibilità e Industria 5.0</h2>
+            <p>Particolare attenzione è stata dedicata all&apos;impatto ambientale e all&apos;efficienza:</p>
+            <ul className="stagger-box">
+              <li><strong>Materiali:</strong> La struttura e i componenti meccanici sono progettati per la manifattura additiva (stampa 3D) utilizzando materiali plastici riciclati.</li>
+              <li><strong>Gestione Energetica:</strong> Il sistema integra batterie ricaricabili supportate da moduli solari e un dispositivo di recupero dell&apos;energia cinetica (KERS) durante le fasi di decelerazione, riducendo gli sprechi energetici nel ciclo operativo.</li>
+            </ul>
+          </div>
+          <div className="image-content animate-block" data-animation="slideRight">
+            <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&q=80&w=800" alt="Sostenibilità" />
+          </div>
+        </div>
+      </section>
+
+      <section id="software" className="section text-center">
+        <div className="container animate-block" data-animation="fadeUp">
+          <h2 className="gradient-text">Architettura Software e Controllo</h2>
+          <p className="lead">L&apos;intelligenza del robot gestisce in modo coordinato locomozione e sensoristica attraverso tre modalità operative:</p>
+          <div className="cards-grid three-cols stagger-box">
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <h3>1. Controllo Remoto</h3>
+                  <p>Wireless</p>
+                </div>
+                <div className="flip-card-back">
+                  <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&q=80&w=400" alt="Controllo Remoto" />
+                  <div className="back-content">
+                    <p>Per manovre manuali d&apos;emergenza o precisione.</p>
                   </div>
                 </div>
-
-              </article>
-            ))
-          )}
+              </div>
+            </div>
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <h3>2. Modalità Automatica</h3>
+                  <p>Algoritmi Intelligenti</p>
+                </div>
+                <div className="flip-card-back">
+                  <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=400" alt="Navigazione Autonoma" />
+                  <div className="back-content">
+                    <p>Basata su algoritmi intelligenti per la navigazione autonoma.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <h3>3. Piattaforma Web</h3>
+                  <p>Monitoraggio Gestionale</p>
+                </div>
+                <div className="flip-card-back">
+                  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400" alt="Piattaforma Web" />
+                  <div className="back-content">
+                    <p>Per il monitoraggio costante, la configurazione dei parametri e la sicurezza operativa contro comandi non autorizzati.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </main>
+      </section>
+
+      <section id="team" className="section bg-alt text-center animate-block" data-animation="fadeUp">
+        <div className="container">
+          <h2 className="gradient-text">Ruoli del Team di Sviluppo</h2>
+          <div className="team-grid stagger-box">
+            <div className="flip-card team-flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <img src="/AtienzaPFP.png" alt="Daniele Atienza" className="team-photo" />
+                  <h3>Daniele Atienza</h3>
+                  <p className="team-role">Progettazione hardware e struttura meccanica.</p>
+                </div>
+                <div className="flip-card-back team-back-content">
+                  <p className="team-bio">Appassionato di design 3D e robotica, si occupa di trasformare le idee in componenti fisici solidi, ottimizzando le masse per la piattaforma AUTOSTOKER.</p>
+                  <div className="social-links">
+                    <a href="https://github.com/atienzadaniele4-arch" target="_blank" rel="noreferrer" className="social-btn">GitHub</a>
+                    <a href="https://www.linkedin.com/in/daniele-atienza-a555843b2/" target="_blank" rel="noreferrer" className="social-btn">LinkedIn</a>
+                    <a href="mailto:atienzadaniele4@gmail.com" className="social-btn">Email</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flip-card team-flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <img src="/PratiPFP.png" alt="Manuel Prati" className="team-photo" />
+                  <h3>Manuel Prati</h3>
+                  <p className="team-role">Sviluppo software e sistemi di controllo.</p>
+                </div>
+                <div className="flip-card-back team-back-content">
+                  <p className="team-bio">Mente logica del gruppo, programma gli applicativi per il controllo del robot. Inoltre programma il gestionale e il sito web, curando il lato comunicativo del progetto.</p>
+                  <div className="social-links">
+                    <a href="https://github.com/MPSup3r" target="_blank" rel="noreferrer" className="social-btn">GitHub</a>
+                    <a href="https://it.linkedin.com/in/manuel-prati-3585613b2" target="_blank" rel="noreferrer" className="social-btn">LinkedIn</a>
+                    <a href="mailto:manuelprati08@gmail.com" className="social-btn">Email</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flip-card team-flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <img src="/EbraicoPFP.png" alt="Lorenzo Ebraico" className="team-photo" />
+                  <h3>Lorenzo Ebraico</h3>
+                  <p className="team-role">Programmazione hardware e integrazione elettronica.</p>
+                </div>
+                <div className="flip-card-back team-back-content">
+                  <p className="team-bio">Specialista dei circuiti, fa da ponte vitale tra la meccanica del robot e il codice, curando la complessa sensoristica e la gestione energetica.</p>
+                  <div className="social-links">
+                    <a href="https://github.com/CosmoUniverso" target="_blank" rel="noreferrer" className="social-btn">GitHub</a>
+                    <a href="https://it.linkedin.com/in/lorenzo-ebraico-bb85933b2" target="_blank" rel="noreferrer" className="social-btn">LinkedIn</a>
+                    <a href="mailto:lorenzo.ebraico@gmail.com" className="social-btn">Email</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   )
 }

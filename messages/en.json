@@ -112,5 +112,10 @@
   "Maintenance": {
     "title": "Site under Maintenance 🚧",
     "description": "We are upgrading our systems to offer you a better experience. Servers will be back online shortly!"
+  },
+  "Landing": {
+    "heroTitle": "AUTOSTOKER",
+    "heroSubtitle": "Innovation in Sustainable Industrial Robotics",
+    "heroCta": "Discover the Project"
   }
 }

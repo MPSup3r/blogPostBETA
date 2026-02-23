@@ -112,5 +112,10 @@
   "Maintenance": {
     "title": "Sito in Manutenzione 🚧",
     "description": "Stiamo effettuando un aggiornamento dei sistemi per offrirti un'esperienza migliore. I server torneranno online a breve!"
+  },
+  "Landing": {
+    "heroTitle": "AUTOSTOKER",
+    "heroSubtitle": "L'Innovazione nella Robotica Industriale Sostenibile",
+    "heroCta": "Scopri il Progetto"
   }
 }
