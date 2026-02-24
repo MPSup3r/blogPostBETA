@@ -144,18 +144,18 @@ export default function HomeVetrina() {
             <img src="/logo_full_black.png" alt="AUTOSTOKER" className="logo-img" />
           </a>
           <ul className="nav-links">
-            <li><a href="#visione">Visione</a></li>
-            <li><a href="#architettura">Architettura</a></li>
-            <li><a href="#locomozione">Locomozione</a></li>
-            <li><a href="#sostenibilita">Sostenibilità</a></li>
-            <li><a href="#software">Software</a></li>
-            <li><a href="#team">Team</a></li>
-            <li><Link href="/modello">Modello 3D</Link></li>
-            <li><Link href="/galleria">Galleria</Link></li>
+            <li><a href="#visione">{t('nav.vision')}</a></li>
+            <li><a href="#architettura">{t('nav.architecture')}</a></li>
+            <li><a href="#locomozione">{t('nav.locomotion')}</a></li>
+            <li><a href="#sostenibilita">{t('nav.sustainability')}</a></li>
+            <li><a href="#software">{t('nav.software')}</a></li>
+            <li><a href="#team">{t('nav.team')}</a></li>
+            <li><Link href="/modello">{t('nav.model3d')}</Link></li>
+            <li><Link href="/galleria">{t('nav.gallery')}</Link></li>
             
             <li>
-              <Link href="/blog" style={{ fontWeight: 'bold', color: '#00d2ff', textShadow: '0 0 10px rgba(0,210,255,0.5)' }}>
-                Vai al Blog
+              <Link href="/post" style={{ fontWeight: 'bold', color: '#00d2ff', textShadow: '0 0 10px rgba(0,210,255,0.5)' }}>
+                {t('nav.blog')}
               </Link>
             </li>
           </ul>
@@ -190,31 +190,31 @@ export default function HomeVetrina() {
 
         <div className="hero-text glass-panel animate-block" data-animation="fadeUp">
           <h1><span className="gradient-text">AUTOSTOKER</span></h1>
-          <p className="subtitle">Il prototipo di robot mobile intelligente per l&apos;automazione industriale sostenibile.</p>
-          <p className="school">Un progetto del team dell&apos;IIS Torricelli di Milano.</p>
+          <p className="subtitle">{t('hero.subtitle')}</p>
+          <p className="school">{t('hero.school')}</p>
         </div>
 
         <Link href="/modello" className="minimal-3d-link animate-block" data-animation="fadeUp">
-          Esplora il modello 3D completo <span>→</span>
+          {t('hero.exploreBtn')} <span>→</span>
         </Link>
       </header>
 
       <section id="visione" className="section text-center animate-block" data-animation="fadeUp">
         <div className="container">
-          <h2 className="gradient-text">Visione del Progetto</h2>
-          <p className="lead">AUTOSTOKER è stato concepito come soluzione sperimentale per ambienti produttivi e logistici, capace di supportare attività operative quali movimentazione oggetti, assistenza ai processi e monitoraggio ambientale.</p>
-          <p>L&apos;intero sistema nasce con l&apos;obiettivo di dimostrare concretamente come robotica, efficienza energetica e integrazione software-hardware possano convergere in una piattaforma tecnologica modulare e scalabile, seguendo un approccio ingegneristico multidisciplinare.</p>
+          <h2 className="gradient-text">{t('vision.title')}</h2>
+          <p className="lead">{t('vision.p1')}</p>
+          <p>{t('vision.p2')}</p>
         </div>
       </section>
 
       <section id="architettura" className="section bg-alt">
         <div className="container grid-2">
           <div className="text-content animate-block" data-animation="slideRight">
-            <h2 className="gradient-text">Architettura Meccanica e Strutturale</h2>
-            <p>Dal punto di vista strutturale, il robot adotta un&apos;architettura innovativa basata su due arti mobili indipendenti (gambe). Questa soluzione è stata scelta per ottimizzare la distribuzione delle masse e la stabilità dinamica.</p>
+            <h2 className="gradient-text">{t('architecture.title')}</h2>
+            <p>{t('architecture.desc')}</p>
             <ul className="stagger-box">
-              <li><strong>Il Corpo Centrale:</strong> Costituisce il busto strutturale portante, rigidamente integrato con il telaio principale. Al suo interno sono alloggiati i moduli elettronici, sensoriali ed energetici, configurati per garantire la massima protezione dei componenti e un bilanciamento dei pesi ottimale.</li>
-              <li><strong>Sistema di Manipolazione:</strong> Per le operazioni di presa, AUTOSTOKER utilizza un meccanismo costituito da due bracci lineari contrapposti. Questa soluzione garantisce una forza uniforme sull&apos;oggetto, robustezza strutturale ed efficienza energetica superiore rispetto a sistemi articolati complessi.</li>
+              <li><strong>{t('architecture.bodyTitle')}</strong> {t('architecture.bodyDesc')}</li>
+              <li><strong>{t('architecture.manipulationTitle')}</strong> {t('architecture.manipulationDesc')}</li>
             </ul>
           </div>
           <div className="image-content animate-block" data-animation="slideLeft">
@@ -225,29 +225,29 @@ export default function HomeVetrina() {
 
       <section id="locomozione" className="section text-center">
         <div className="container animate-block" data-animation="fadeUp">
-          <h2 className="gradient-text">Sistema di Locomozione Avanzato</h2>
-          <p className="lead">Il sistema di movimento è il cuore tecnologico del prototipo.</p>
-          <p>Ogni &quot;piede&quot; del robot integra un set di due ruote con funzioni sdoppiate:</p>
+          <h2 className="gradient-text">{t('locomotion.title')}</h2>
+          <p className="lead">{t('locomotion.desc1')}</p>
+          <p>{t('locomotion.desc2')}</p>
           <div className="cards-grid stagger-box">
             <div className="flip-card locomotion-flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <h3>Ruota Anteriore (Sterzo)</h3>
-                  <p className="team-role">Controllo Direzionale</p>
+                  <h3>{t('locomotion.frontWheel')}</h3>
+                  <p className="team-role">{t('locomotion.frontRole')}</p>
                 </div>
                 <div className="flip-card-back locomotion-back-content">
-                  <p>Dedicata esclusivamente alla direzione. Essendo priva di trazione, permette una precisione millimetrica nelle manovre e riduce drasticamente gli attriti durante i cambi di traiettoria.</p>
+                  <p>{t('locomotion.frontDesc')}</p>
                 </div>
               </div>
             </div>
             <div className="flip-card locomotion-flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <h3>Ruota Posteriore (Trazione)</h3>
-                  <p className="team-role">Forza Motrice</p>
+                  <h3>{t('locomotion.rearWheel')}</h3>
+                  <p className="team-role">{t('locomotion.rearRole')}</p>
                 </div>
                 <div className="flip-card-back locomotion-back-content">
-                  <p>Dedicata esclusivamente alla spinta e alla forza motrice. Questa configurazione ibrida permette un controllo dinamico superiore, evitando slittamenti e ottimizzando il consumo energetico durante lo spostamento di carichi pesanti.</p>
+                  <p>{t('locomotion.rearDesc')}</p>
                 </div>
               </div>
             </div>
@@ -258,11 +258,11 @@ export default function HomeVetrina() {
       <section id="sostenibilita" className="section bg-alt">
         <div className="container grid-2 reverse">
           <div className="text-content animate-block" data-animation="slideLeft">
-            <h2 className="gradient-text">Sostenibilità e Industria 5.0</h2>
-            <p>Particolare attenzione è stata dedicata all&apos;impatto ambientale e all&apos;efficienza:</p>
+            <h2 className="gradient-text">{t('sustainability.title')}</h2>
+            <p>{t('sustainability.desc')}</p>
             <ul className="stagger-box">
-              <li><strong>Materiali:</strong> La struttura e i componenti meccanici sono progettati per la manifattura additiva (stampa 3D) utilizzando materiali plastici riciclati.</li>
-              <li><strong>Gestione Energetica:</strong> Il sistema integra batterie ricaricabili supportate da moduli solari e un dispositivo di recupero dell&apos;energia cinetica (KERS) durante le fasi di decelerazione, riducendo gli sprechi energetici nel ciclo operativo.</li>
+              <li><strong>{t('sustainability.materialsTitle')}</strong> {t('sustainability.materialsDesc')}</li>
+              <li><strong>{t('sustainability.energyTitle')}</strong> {t('sustainability.energyDesc')}</li>
             </ul>
           </div>
           <div className="image-content animate-block" data-animation="slideRight">
@@ -273,19 +273,19 @@ export default function HomeVetrina() {
 
       <section id="software" className="section text-center">
         <div className="container animate-block" data-animation="fadeUp">
-          <h2 className="gradient-text">Architettura Software e Controllo</h2>
-          <p className="lead">L&apos;intelligenza del robot gestisce in modo coordinato locomozione e sensoristica attraverso tre modalità operative:</p>
+          <h2 className="gradient-text">{t('software.title')}</h2>
+          <p className="lead">{t('software.desc')}</p>
           <div className="cards-grid three-cols stagger-box">
             <div className="flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <h3>1. Controllo Remoto</h3>
-                  <p>Wireless</p>
+                  <h3>{t('software.remoteTitle')}</h3>
+                  <p>{t('software.remoteSubtitle')}</p>
                 </div>
                 <div className="flip-card-back">
                   <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?auto=format&fit=crop&q=80&w=400" alt="Controllo Remoto" />
                   <div className="back-content">
-                    <p>Per manovre manuali d&apos;emergenza o precisione.</p>
+                    <p>{t('software.remoteDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -293,13 +293,13 @@ export default function HomeVetrina() {
             <div className="flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <h3>2. Modalità Automatica</h3>
-                  <p>Algoritmi Intelligenti</p>
+                  <h3>{t('software.autoTitle')}</h3>
+                  <p>{t('software.autoSubtitle')}</p>
                 </div>
                 <div className="flip-card-back">
                   <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=400" alt="Navigazione Autonoma" />
                   <div className="back-content">
-                    <p>Basata su algoritmi intelligenti per la navigazione autonoma.</p>
+                    <p>{t('software.autoDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -307,13 +307,13 @@ export default function HomeVetrina() {
             <div className="flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <h3>3. Piattaforma Web</h3>
-                  <p>Monitoraggio Gestionale</p>
+                  <h3>{t('software.webTitle')}</h3>
+                  <p>{t('software.webSubtitle')}</p>
                 </div>
                 <div className="flip-card-back">
                   <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400" alt="Piattaforma Web" />
                   <div className="back-content">
-                    <p>Per il monitoraggio costante, la configurazione dei parametri e la sicurezza operativa contro comandi non autorizzati.</p>
+                    <p>{t('software.webDesc')}</p>
                   </div>
                 </div>
               </div>
@@ -324,17 +324,17 @@ export default function HomeVetrina() {
 
       <section id="team" className="section bg-alt text-center animate-block" data-animation="fadeUp">
         <div className="container">
-          <h2 className="gradient-text">Ruoli del Team di Sviluppo</h2>
+          <h2 className="gradient-text">{t('team.title')}</h2>
           <div className="team-grid stagger-box">
             <div className="flip-card team-flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
                   <img src="/AtienzaPFP.png" alt="Daniele Atienza" className="team-photo" />
                   <h3>Daniele Atienza</h3>
-                  <p className="team-role">Progettazione hardware e struttura meccanica.</p>
+                  <p className="team-role">{t('team.danieleRole')}</p>
                 </div>
                 <div className="flip-card-back team-back-content">
-                  <p className="team-bio">Appassionato di design 3D e robotica, si occupa di trasformare le idee in componenti fisici solidi, ottimizzando le masse per la piattaforma AUTOSTOKER.</p>
+                  <p className="team-bio">{t('team.danieleBio')}</p>
                   <div className="social-links">
                     <a href="https://github.com/atienzadaniele4-arch" target="_blank" rel="noreferrer" className="social-btn">GitHub</a>
                     <a href="https://www.linkedin.com/in/daniele-atienza-a555843b2/" target="_blank" rel="noreferrer" className="social-btn">LinkedIn</a>
@@ -348,10 +348,10 @@ export default function HomeVetrina() {
                 <div className="flip-card-front">
                   <img src="/PratiPFP.png" alt="Manuel Prati" className="team-photo" />
                   <h3>Manuel Prati</h3>
-                  <p className="team-role">Sviluppo software e sistemi di controllo.</p>
+                  <p className="team-role">{t('team.manuelRole')}</p>
                 </div>
                 <div className="flip-card-back team-back-content">
-                  <p className="team-bio">Mente logica del gruppo, programma gli applicativi per il controllo del robot. Inoltre programma il gestionale e il sito web, curando il lato comunicativo del progetto.</p>
+                  <p className="team-bio">{t('team.manuelBio')}</p>
                   <div className="social-links">
                     <a href="https://github.com/MPSup3r" target="_blank" rel="noreferrer" className="social-btn">GitHub</a>
                     <a href="https://it.linkedin.com/in/manuel-prati-3585613b2" target="_blank" rel="noreferrer" className="social-btn">LinkedIn</a>
@@ -365,10 +365,10 @@ export default function HomeVetrina() {
                 <div className="flip-card-front">
                   <img src="/EbraicoPFP.png" alt="Lorenzo Ebraico" className="team-photo" />
                   <h3>Lorenzo Ebraico</h3>
-                  <p className="team-role">Programmazione hardware e integrazione elettronica.</p>
+                  <p className="team-role">{t('team.lorenzoRole')}</p>
                 </div>
                 <div className="flip-card-back team-back-content">
-                  <p className="team-bio">Specialista dei circuiti, fa da ponte vitale tra la meccanica del robot e il codice, curando la complessa sensoristica e la gestione energetica.</p>
+                  <p className="team-bio">{t('team.lorenzoBio')}</p>
                   <div className="social-links">
                     <a href="https://github.com/CosmoUniverso" target="_blank" rel="noreferrer" className="social-btn">GitHub</a>
                     <a href="https://it.linkedin.com/in/lorenzo-ebraico-bb85933b2" target="_blank" rel="noreferrer" className="social-btn">LinkedIn</a>

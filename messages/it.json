@@ -1,4 +1,76 @@
 {
+  "Landing": {
+    "nav": {
+      "vision": "Visione",
+      "architecture": "Architettura",
+      "locomotion": "Locomozione",
+      "sustainability": "Sostenibilità",
+      "software": "Software",
+      "team": "Team",
+      "model3d": "Modello 3D",
+      "gallery": "Galleria",
+      "blog": "Vai al Blog"
+    },
+    "hero": {
+      "subtitle": "Il prototipo di robot mobile intelligente per l'automazione industriale sostenibile.",
+      "school": "Un progetto del team dell'IIS Torricelli di Milano.",
+      "exploreBtn": "Esplora il modello 3D completo"
+    },
+    "vision": {
+      "title": "Visione del Progetto",
+      "p1": "AUTOSTOKER è stato concepito come soluzione sperimentale per ambienti produttivi e logistici, capace di supportare attività operative quali movimentazione oggetti, assistenza ai processi e monitoraggio ambientale.",
+      "p2": "L'intero sistema nasce con l'obiettivo di dimostrare concretamente come robotica, efficienza energetica e integrazione software-hardware possano convergere in una piattaforma tecnologica modulare e scalabile, seguendo un approccio ingegneristico multidisciplinare."
+    },
+    "architecture": {
+      "title": "Architettura Meccanica e Strutturale",
+      "desc": "Dal punto di vista strutturale, il robot adotta un'architettura innovativa basata su due arti mobili indipendenti (gambe). Questa soluzione è stata scelta per ottimizzare la distribuzione delle masse e la stabilità dinamica.",
+      "bodyTitle": "Il Corpo Centrale:",
+      "bodyDesc": "Costituisce il busto strutturale portante, rigidamente integrato con il telaio principale. Al suo interno sono alloggiati i moduli elettronici, sensoriali ed energetici, configurati per garantire la massima protezione dei componenti e un bilanciamento dei pesi ottimale.",
+      "manipulationTitle": "Sistema di Manipolazione:",
+      "manipulationDesc": "Per le operazioni di presa, AUTOSTOKER utilizza un meccanismo costituito da due bracci lineari contrapposti. Questa soluzione garantisce una forza uniforme sull'oggetto, robustezza strutturale ed efficienza energetica superiore rispetto a sistemi articolati complessi."
+    },
+    "locomotion": {
+      "title": "Sistema di Locomozione Avanzato",
+      "desc1": "Il sistema di movimento è il cuore tecnologico del prototipo.",
+      "desc2": "Ogni \"piede\" del robot integra un set di due ruote con funzioni sdoppiate:",
+      "frontWheel": "Ruota Anteriore (Sterzo)",
+      "frontRole": "Controllo Direzionale",
+      "frontDesc": "Dedicata esclusivamente alla direzione. Essendo priva di trazione, permette una precisione millimetrica nelle manovre e riduce drasticamente gli attriti durante i cambi di traiettoria.",
+      "rearWheel": "Ruota Posteriore (Trazione)",
+      "rearRole": "Forza Motrice",
+      "rearDesc": "Dedicata esclusivamente alla spinta e alla forza motrice. Questa configurazione ibrida permette un controllo dinamico superiore, evitando slittamenti e ottimizzando il consumo energetico durante lo spostamento di carichi pesanti."
+    },
+    "sustainability": {
+      "title": "Sostenibilità e Industria 5.0",
+      "desc": "Particolare attenzione è stata dedicata all'impatto ambientale e all'efficienza:",
+      "materialsTitle": "Materiali:",
+      "materialsDesc": "La struttura e i componenti meccanici sono progettati per la manifattura additiva (stampa 3D) utilizzando materiali plastici riciclati.",
+      "energyTitle": "Gestione Energetica:",
+      "energyDesc": "Il sistema integra batterie ricaricabili supportate da moduli solari e un dispositivo di recupero dell'energia cinetica (KERS) durante le fasi di decelerazione, riducendo gli sprechi energetici nel ciclo operativo."
+    },
+    "software": {
+      "title": "Architettura Software e Controllo",
+      "desc": "L'intelligenza del robot gestisce in modo coordinato locomozione e sensoristica attraverso tre modalità operative:",
+      "remoteTitle": "1. Controllo Remoto",
+      "remoteSubtitle": "Wireless",
+      "remoteDesc": "Per manovre manuali d'emergenza o precisione.",
+      "autoTitle": "2. Modalità Automatica",
+      "autoSubtitle": "Algoritmi Intelligenti",
+      "autoDesc": "Basata su algoritmi intelligenti per la navigazione autonoma.",
+      "webTitle": "3. Piattaforma Web",
+      "webSubtitle": "Monitoraggio Gestionale",
+      "webDesc": "Per il monitoraggio costante, la configurazione dei parametri e la sicurezza operativa contro comandi non autorizzati."
+    },
+    "team": {
+      "title": "Ruoli del Team di Sviluppo",
+      "danieleRole": "Progettazione hardware e struttura meccanica.",
+      "danieleBio": "Appassionato di design 3D e robotica, si occupa di trasformare le idee in componenti fisici solidi, ottimizzando le masse per la piattaforma AUTOSTOKER.",
+      "manuelRole": "Sviluppo software e sistemi di controllo.",
+      "manuelBio": "Mente logica del gruppo, programma gli applicativi per il controllo del robot. Inoltre programma il gestionale e il sito web, curando il lato comunicativo del progetto.",
+      "lorenzoRole": "Programmazione hardware e integrazione elettronica.",
+      "lorenzoBio": "Specialista dei circuiti, fa da ponte vitale tra la meccanica del robot e il codice, curando la complessa sensoristica e la gestione energetica."
+    }
+  },
   "HomePage": {
     "title": "Ultimi Aggiornamenti",
     "subtitle": "Rimani aggiornato sullo sviluppo del progetto AutoStocker BETA.",
@@ -112,10 +184,5 @@
   "Maintenance": {
     "title": "Sito in Manutenzione 🚧",
     "description": "Stiamo effettuando un aggiornamento dei sistemi per offrirti un'esperienza migliore. I server torneranno online a breve!"
-  },
-  "Landing": {
-    "heroTitle": "AUTOSTOKER",
-    "heroSubtitle": "L'Innovazione nella Robotica Industriale Sostenibile",
-    "heroCta": "Scopri il Progetto"
   }
 }
