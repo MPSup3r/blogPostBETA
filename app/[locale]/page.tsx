@@ -1,8 +1,10 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { useTranslations } from 'next-intl'
+import { useTranslations, useLocale } from 'next-intl'
 import Link from 'next/link'
+import { createClient } from '@/utils/supabase/client'
+import { type User, type AuthChangeEvent, type Session } from '@supabase/supabase-js'
 import './style.css'
 
 const ModelViewer = (props: React.HTMLAttributes<HTMLElement> & {
@@ -18,14 +20,39 @@ const ModelViewer = (props: React.HTMLAttributes<HTMLElement> & {
 };
 
 export default function HomeVetrina() {
-  const t = useTranslations('Landing') 
+  const t = useTranslations('Landing')
+  const tNav = useTranslations('Nav')
+  const tSettings = useTranslations('Settings')
+  const locale = useLocale()
 
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const supabase = createClient();
 
+  // 1. GESTIONE LOGIN SUPABASE IN TEMPO REALE
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+    };
+    checkUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 2. GESTIONE TEMA DARK/LIGHT
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsDarkMode(true);
       document.body.classList.add('dark-mode'); 
       document.documentElement.setAttribute('data-theme', 'dark'); 
@@ -46,16 +73,12 @@ export default function HomeVetrina() {
     }
   };
 
+  // 3. INIZIALIZZAZIONE SCRIPT E ANIMAZIONI
   useEffect(() => {
     const modelViewerScript = document.createElement('script')
     modelViewerScript.type = 'module'
     modelViewerScript.src = 'https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js'
     document.head.appendChild(modelViewerScript)
-
-    const myScript = document.createElement('script')
-    myScript.src = '/script.js'
-    myScript.async = true
-    document.body.appendChild(myScript)
 
     const animatedElements = document.querySelectorAll('.animate-block, .stagger-box > *, .flip-card');
     
@@ -63,7 +86,6 @@ export default function HomeVetrina() {
       const htmlEl = el as HTMLElement;
       htmlEl.style.opacity = '0';
       htmlEl.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-      
       const animType = el.getAttribute('data-animation');
       if (animType === 'slideRight') htmlEl.style.transform = 'translateX(-50px)';
       else if (animType === 'slideLeft') htmlEl.style.transform = 'translateX(50px)';
@@ -85,8 +107,6 @@ export default function HomeVetrina() {
 
     let lastScrollY = window.scrollY;
     const navbar = document.getElementById('navbar');
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-links a');
 
     const handleScroll = () => {
       if (navbar) {
@@ -98,38 +118,12 @@ export default function HomeVetrina() {
         }
         lastScrollY = window.scrollY;
       }
-
-      let currentSectionId = '';
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop;
-        if (window.scrollY >= sectionTop - 200) {
-          currentSectionId = section.getAttribute('id') || '';
-        }
-      });
-
-      navLinks.forEach((link) => {
-        const htmlLink = link as HTMLElement;
-        const href = htmlLink.getAttribute('href');
-        
-        if (href && href.startsWith('#')) {
-          htmlLink.style.color = ''; 
-          htmlLink.style.textShadow = '';
-          htmlLink.style.fontWeight = 'normal';
-          
-          if (href === `#${currentSectionId}`) {
-            htmlLink.style.color = '#00d2ff';
-            htmlLink.style.textShadow = '0 0 10px rgba(0,210,255,0.3)';
-            htmlLink.style.fontWeight = 'bold';
-          }
-        }
-      });
     };
 
     window.addEventListener('scroll', handleScroll);
 
     return () => {
       if (document.head.contains(modelViewerScript)) document.head.removeChild(modelViewerScript)
-      if (document.body.contains(myScript)) document.body.removeChild(myScript)
       window.removeEventListener('scroll', handleScroll)
       observer.disconnect()
     }
@@ -138,32 +132,55 @@ export default function HomeVetrina() {
   return (
     <div className="vetrina-wrapper">
       
+      {/* NAVBAR PULITA E UNIFICATA */}
       <nav id="navbar">
         <div className="nav-content">
-          <a href="#" className="logo">
+          <Link href={`/${locale}`} className="logo">
             <img src="/logo_full_black.png" alt="AUTOSTOKER" className="logo-img" />
-          </a>
+          </Link>
           <ul className="nav-links">
-            <li><a href="#visione">{t('nav.vision')}</a></li>
-            <li><a href="#architettura">{t('nav.architecture')}</a></li>
-            <li><a href="#locomozione">{t('nav.locomotion')}</a></li>
-            <li><a href="#sostenibilita">{t('nav.sustainability')}</a></li>
-            <li><a href="#software">{t('nav.software')}</a></li>
-            <li><a href="#team">{t('nav.team')}</a></li>
-            <li><Link href="/modello">{t('nav.model3d')}</Link></li>
-            <li><Link href="/galleria">{t('nav.gallery')}</Link></li>
+            <li><a href="#visione">Visione</a></li>
+            <li><a href="#architettura">Architettura</a></li>
+            <li><a href="#locomozione">Locomozione</a></li>
+            <li><a href="#sostenibilita">Sostenibilità</a></li>
+            <li><a href="#software">Software</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><Link href="/modello">Modello 3D</Link></li>
+            <li><Link href="/galleria">Galleria</Link></li>
             
             <li>
-              <Link href="/post" style={{ fontWeight: 'bold', color: '#00d2ff', textShadow: '0 0 10px rgba(0,210,255,0.5)' }}>
-                {t('nav.blog')}
+              <Link href="/blog" style={{ fontWeight: 'bold', color: '#00d2ff', textShadow: '0 0 10px rgba(0,210,255,0.5)' }}>
+                Vai al Blog
               </Link>
             </li>
+
+            {/* BOTTONI ACCOUNT DINAMICI */}
+            {user ? (
+              <li>
+                <Link href={`/${locale}/settings`} style={{ 
+                  backgroundColor: 'rgba(0, 210, 255, 0.15)', color: '#00d2ff', border: '1px solid #00d2ff',
+                  padding: '8px 20px', borderRadius: '25px', fontWeight: 'bold', textDecoration: 'none',
+                  transition: 'all 0.3s ease'
+                }}>
+                  {tSettings('title')} {/* Usa la scritta "Settings" dal tuo JSON */}
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link href={`/${locale}/login`} style={{ 
+                  backgroundColor: '#00d2ff', color: '#000', padding: '8px 20px', 
+                  borderRadius: '25px', fontWeight: 'bold', textDecoration: 'none',
+                  boxShadow: '0 4px 10px rgba(0, 210, 255, 0.3)', transition: 'all 0.3s ease'
+                }}>
+                  {tNav('login')}
+                </Link>
+              </li>
+            )}
           </ul>
 
           <label className="theme-switch" aria-label="Cambia Tema">
             <input 
               type="checkbox" 
-              id="theme-checkbox" 
               checked={isDarkMode}
               onChange={toggleTheme}
             />
@@ -195,10 +212,11 @@ export default function HomeVetrina() {
         </div>
 
         <Link href="/modello" className="minimal-3d-link animate-block" data-animation="fadeUp">
-          {t('hero.exploreBtn')} <span>→</span>
+          Esplora il modello 3D completo <span>→</span>
         </Link>
       </header>
 
+      {/* ... RESTO DELLE SEZIONI (Visione, Architettura, Locomozione, ecc.) INVARIATE ... */}
       <section id="visione" className="section text-center animate-block" data-animation="fadeUp">
         <div className="container">
           <h2 className="gradient-text">{t('vision.title')}</h2>
@@ -329,7 +347,7 @@ export default function HomeVetrina() {
             <div className="flip-card team-flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <img src="/AtienzaPFP.png" alt="Daniele Atienza" className="team-photo" />
+                  <img src="/AtienzaPFP_2.png" alt="Daniele Atienza" className="team-photo" />
                   <h3>Daniele Atienza</h3>
                   <p className="team-role">{t('team.danieleRole')}</p>
                 </div>
@@ -346,7 +364,7 @@ export default function HomeVetrina() {
             <div className="flip-card team-flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <img src="/PratiPFP.png" alt="Manuel Prati" className="team-photo" />
+                  <img src="/PratiPFP_2.png" alt="Manuel Prati" className="team-photo" />
                   <h3>Manuel Prati</h3>
                   <p className="team-role">{t('team.manuelRole')}</p>
                 </div>
@@ -363,7 +381,7 @@ export default function HomeVetrina() {
             <div className="flip-card team-flip-card">
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <img src="/EbraicoPFP.png" alt="Lorenzo Ebraico" className="team-photo" />
+                  <img src="/EbraicoPFP_2.png" alt="Lorenzo Ebraico" className="team-photo" />
                   <h3>Lorenzo Ebraico</h3>
                   <p className="team-role">{t('team.lorenzoRole')}</p>
                 </div>
