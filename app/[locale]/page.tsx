@@ -138,19 +138,14 @@ export default function HomeVetrina() {
           <Link href={`/${locale}`} className="logo">
             <img src="/logo_full_black.png" alt="AUTOSTOKER" className="logo-img" />
           </Link>
-          <ul className="nav-links">
-            <li><a href="#visione">Visione</a></li>
-            <li><a href="#architettura">Architettura</a></li>
-            <li><a href="#locomozione">Locomozione</a></li>
-            <li><a href="#sostenibilita">Sostenibilità</a></li>
-            <li><a href="#software">Software</a></li>
-            <li><a href="#team">Team</a></li>
-            <li><Link href="/modello">Modello 3D</Link></li>
-            <li><Link href="/galleria">Galleria</Link></li>
+          
+          <ul className="nav-links" style={{ alignItems: 'center' }}>
+            <li><Link href={`/${locale}/modello`}>{t('nav.model3d')}</Link></li>
+            <li><Link href={`/${locale}/galleria`}>{t('nav.gallery')}</Link></li>
             
             <li>
-              <Link href="/blog" style={{ fontWeight: 'bold', color: '#00d2ff', textShadow: '0 0 10px rgba(0,210,255,0.5)' }}>
-                Vai al Blog
+              <Link href={`/${locale}/blog`} style={{ fontWeight: 'bold', color: '#00d2ff', marginRight: '15px' }}>
+                {t('nav.blog')}
               </Link>
             </li>
 
@@ -211,8 +206,8 @@ export default function HomeVetrina() {
           <p className="school">{t('hero.school')}</p>
         </div>
 
-        <Link href="/modello" className="minimal-3d-link animate-block" data-animation="fadeUp">
-          Esplora il modello 3D completo <span>→</span>
+        <Link href={`/${locale}/modello`} className="minimal-3d-link animate-block" data-animation="fadeUp">
+          {t('hero.exploreBtn')} <span>→</span>
         </Link>
       </header>
 
